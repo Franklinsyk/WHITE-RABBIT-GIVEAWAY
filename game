@@ -1,0 +1,35 @@
+const TelegramBot = require('node-telegram-bot-api');
+
+// Replace with your BotFather API token
+const token = 'YOUR_TELEGRAM_BOT_API_TOKEN';
+
+// Create a bot instance with polling enabled
+const bot = new TelegramBot(token, { polling: true });
+
+// URL where your HTML game is hosted (must be HTTPS)
+const gameUrl = 'https://your-game-url.com';
+
+// Listen for the /start command
+bot.onText(/\/start/, (msg) => {
+  const chatId = msg.chat.id;
+  const welcomeMessage = 'Welcome to The White Rabbit Arcade Game! Click the button below to play.';
+  
+  // Define an inline keyboard with a Web App button
+  const options = {
+    reply_markup: {
+      inline_keyboard: [
+        [
+          {
+            text: 'Play Game',
+            web_app: {
+              url: gameUrl  // This URL opens your game inside Telegram
+            }
+          }
+        ]
+      ]
+    }
+  };
+
+  // Send the message with the inline keyboard
+  bot.sendMessage(chatId, welcomeMessage, options);
+});
